@@ -10,6 +10,43 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Amazonite color palette */
+  --color-amazonite-50: #e6f8f5;
+  --color-amazonite-100: #c0f0e8;
+  --color-amazonite-200: #96e7da;
+  --color-amazonite-300: #6bdccc;
+  --color-amazonite-400: #4bd2c1;
+  --color-amazonite-500: #27c9b6;
+  --color-amazonite-600: #1fb8a5;
+  --color-amazonite-700: #16a390;
+  --color-amazonite-800: #0d8f7b;
+  --color-amazonite-900: #006d5b;
+
+  /* Amethyst color palette */
+  --color-amethyst-50: #f4eef9;
+  --color-amethyst-100: #e5d5f0;
+  --color-amethyst-200: #d5bae7;
+  --color-amethyst-300: #c59edd;
+  --color-amethyst-400: #b888d6;
+  --color-amethyst-500: #ab72cf;
+  --color-amethyst-600: #9a5fbe;
+  --color-amethyst-700: #8549a8;
+  --color-amethyst-800: #703892;
+  --color-amethyst-900: #4f1a6d;
+
+  /* Stone color palette */
+  --color-stone-50: #f9f8f7;
+  --color-stone-100: #f0eeeb;
+  --color-stone-200: #e0dbd6;
+  --color-stone-300: #c8c0b8;
+  --color-stone-400: #a89e94;
+  --color-stone-500: #8a7d72;
+  --color-stone-600: #6e6258;
+  --color-stone-700: #574d45;
+  --color-stone-800: #3a322d;
+  --color-stone-900: #231e1b;
+
 }
 
 @media (prefers-color-scheme: dark) {
