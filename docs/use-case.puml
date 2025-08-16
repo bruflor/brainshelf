@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+User as user
+ISBN_API as ext_api
+
+rectangle "Brainshelf System" {
+  (Register/Login) as UC1
+  (Add Book to a Shelve) as UC2
+  (Update Book metadata via ISBN) as UC3
+  (Edit Book Details) as UC4
+  (Add Quotes) as UC5
+  (Rate Book) as UC6
+  (Mark as Favorite) as UC7
+  (Write Review) as UC8
+  (Add Notes) as UC9
+  (Manage Content Visibility) as UC10
+  (Share Content) as UC11
+  (View Statistics) as UC12
+}
+
+user --> UC1
+user --> UC2
+ext_api --> UC3
+user --> UC4
+user --> UC5
+user --> UC6
+user --> UC7
+user --> UC8
+user --> UC9
+user --> UC10
+user --> UC11
+user --> UC12
+
+@enduml

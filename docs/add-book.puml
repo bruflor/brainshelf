@@ -1,0 +1,24 @@
+@startuml Add_Book_via_ISBN_Sequence
+
+actor User
+participant "Web UI" as UI
+participant "Controller" as Controller
+participant "ISBN Service" as ISBNService
+participant "Database" as DB
+
+User -> UI: Enters ISBN or book title
+UI -> Controller: Submit ISBN (GET /books)
+Controller -> ISBNService: Fetch book metadata (ISBN)
+ISBNService --> Controller: Return book data (title, author, etc.)
+Controller -> UI: Display book detail to user
+User -> UI: Update book information and custom fields
+Controller -> DB: Save book with user ID
+DB --> Controller: Confirm book creation
+Controller -> UI: Display success + book details
+UI --> User: Show added book in shelf
+
+note right of ISBNService
+  Uses Open Library API
+  or ISBNdb with fallback
+end note
+@enduml
