@@ -28,6 +28,8 @@ Brainshelf is a **personalized reading organizer** designed for book lovers who 
 - The system shall generate readings statics (books/year, books/author gender)
 
 - The system shall be organized by shelves
+- The system shall allow user to create custom shelves
+- The system shall have three default shelves the status (reading, want to read, finished)
 - The system shall allow filters in each shelve
 
 ### Non-functional
