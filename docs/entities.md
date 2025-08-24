@@ -1,4 +1,4 @@
-#### 1. Entity: `Content`
+#### 1. Entity: `Media`
 
 This table holds the metadata about the work itself.
 
@@ -39,11 +39,11 @@ This table holds the metadata about the work itself.
 
 #### 2. Entity: `ReadingSession`
 
-This table logs each time a user engages with a piece of Content.
+This table logs each time a user engages with a piece of Media.
 
 - **`reading_id`** (Primary Key): A unique identifier.
 
-- **`content_id`** (Foreign Key): Links to the `Content` table. _Required._
+- **`content_id`** (Foreign Key): Links to the `Media` table. _Required._
 
 - **`user_id`** (Foreign Key): Links to the User table (assuming multiple users in the future). _Required._
 
@@ -65,7 +65,8 @@ This table logs each time a user engages with a piece of Content.
 
     - Values: `Physical`, `Digital`, `Audio`
 
-    - _Why? A user might read a physical book first (`Format: Physical`) and later listen to the audiobook (`Format: Audio`). Both are readings of the same `Content`._
+    - _Why? A user might read a physical book first (`Format: Physical`) and later listen to the audiobook (`Format: Audio`). Both are readings of the same `Media`._
+- 
 ### `Shelf` (or `Collection`)
 
 This table stores the definition of a custom, dynamic shelf.
@@ -91,7 +92,7 @@ This is the core of the dynamic shelf. Each rule is a single condition. A shelf 
 
 - **`shelf_id`** (Foreign Key): Links to the parent Shelf.
 
-- **`field`** (Enum): Which field of the `Content` or `ReadingSession` to check.
+- **`field`** (Enum): Which field of the `Media` or `ReadingSession` to check.
 
     - Values: `content.author`, `content.genre`, `content.language`, `content.type`, `reading_session.status`, `reading_session.date_finished` (year), etc.
 
@@ -111,4 +112,4 @@ This shelf would be built from these rules:
 
 2. `(content.genre CONTAINS "Fiction")`
 
-3. `(content.country IS IN ["Argentina", "Brazil", "Mexico", ...])` // Assuming you add a `country` field to Content
+3. `(content.country IS IN ["Argentina", "Brazil", "Mexico", ...])` // Assuming you add a `country` field to Media
