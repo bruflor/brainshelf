@@ -1,0 +1,210 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite" //change later to "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // These lines are just "virtual" links for Prisma to use
+  // They are NOT stored in the User table.
+  readings  ReadingSession[]
+  shelves   Shelf[]
+  goals     ReadingGoal[]
+  favorites Favorite[]
+}
+
+model Media {
+  id            String    @id @default(cuid())
+  title         String
+  type          MediaType
+  description   String?
+  language      String
+  country       String?
+  publisher     String?
+  publishedDate DateTime?
+  isbn          String?
+  url           String?
+  pageCount     Int?
+  duration      Int?
+  coverImageUrl String?
+
+  // Corrected Many-to-Many relationships using implicit syntax
+  authors Author[]
+  genres  Genre[]
+  tags    Tag[]
+
+  readingSessions ReadingSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  favorites Favorite[]
+}
+
+model Author {
+  id          String        @id @default(cuid())
+  name        String
+  gender      AuthorGender?
+  nationality String?
+  bio         String?
+  birthDate   DateTime?
+  deathDate   DateTime?
+  notes       Note[]
+
+  // Corrected relation field. This links back to the Media model.
+  medias Media[]
+}
+
+// Define the missing Genre model
+model Genre {
+  id     String  @id @default(cuid())
+  name   String
+  // Relation field back to Media
+  medias Media[]
+}
+
+// Define the missing Tag model
+model Tag {
+  id     String  @id @default(cuid())
+  name   String
+  // Relation field back to Media
+  medias Media[]
+}
+model Note {
+  id     String  @id @default(cuid())
+  title   String?
+  content String
+
+
+  authors Author[]
+
+  readingSessions ReadingSession[]
+}
+
+model Favorite {
+  id      String   @id @default(cuid())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  media   Media    @relation(fields: [mediaId], references: [id])
+  mediaId String
+  addedAt DateTime @default(now())
+
+  // Prevents a user from favoriting the same media twice
+  @@unique([userId, mediaId])
+}
+
+model ReadingSession {
+  id           String        @id @default(cuid())
+  status       ReadingStatus
+  dateStarted  DateTime?
+  dateFinished DateTime?
+  currentPage  Int?
+  progress     Float?
+  rating       Int?
+  notes        Note[]
+  format       FormatType?
+
+  media   Media  @relation(fields: [mediaId], references: [id])
+  mediaId String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Good idea for data integrity! Let's add this unique constraint.
+  // Prevents a user from having multiple sessions of the same status for one media.
+  @@unique([userId, mediaId, status])
+}
+
+model Shelf {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  isPublic    Boolean     @default(false)
+  icon        String?
+  color       String?
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  rules       ShelfRule[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model ShelfRule {
+  id       String   @id @default(cuid())
+  field    String
+  operator Operator
+  value    String
+  shelf    Shelf    @relation(fields: [shelfId], references: [id])
+  shelfId  String
+}
+
+model ReadingGoal {
+  id     String @id @default(cuid())
+  year   Int
+  target Int
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, year])
+}
+
+// ===== ENUMS =====
+enum AuthorGender {
+  WOMAN
+  MAN
+  NON_BINARY
+  OTHER
+}
+
+enum MediaType {
+  BOOK
+  AUDIOBOOK
+  EBOOK
+  PODCAST
+  SCIENTIFIC_ARTICLE
+  BLOG_POST
+  SHORT_STORY
+  ESSAY
+  OTHER
+}
+
+enum ReadingStatus {
+  WANT_TO_READ
+  READING
+  FINISHED
+  PAUSED
+  ABANDONED
+}
+
+enum FormatType {
+  PHYSICAL
+  DIGITAL
+  AUDIO
+}
+
+enum Operator {
+  IS
+  IS_NOT
+  CONTAINS
+  DOES_NOT_CONTAIN
+  IN_LAST
+  BEFORE
+  AFTER
+  GREATER_THAN
+}

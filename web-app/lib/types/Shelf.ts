@@ -1,19 +1,28 @@
-export interface Shelf{
-    id:string;
-    user_id:string;
-    name:string;
-    description:string;
-    is_public:boolean;
-    icon:string;
-    rules:ShelfRule[]
+import {User} from "@/lib/types/User";
+
+export interface Shelf {
+    id: string;
+    name: string;
+    description: string | null;
+    isPublic: boolean;
+    icon: string | null;
+    color: string | null;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    // Relations
+    user?: User;
+    rules?: ShelfRule[];
 }
 
-interface ShelfRule{
-    id:string;
-    shelf_id:string;
-    field:string
-    value:string | string[]
-    operator:Operator
+export interface ShelfRule {
+    id: string;
+    field: string;
+    operator: Operator;
+    value: string;
+    shelfId: string;
+    // Relations
+    shelf?: Shelf;
 }
 
 enum Operator {
